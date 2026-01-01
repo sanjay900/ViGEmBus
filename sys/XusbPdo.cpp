@@ -47,7 +47,7 @@
 PCWSTR ViGEm::Bus::Targets::EmulationTargetXUSB::_deviceDescription = L"Virtual Xbox 360 Controller";
 
 ViGEm::Bus::Targets::EmulationTargetXUSB::EmulationTargetXUSB(ULONG Serial, LONG SessionId, USHORT VendorId,
-	USHORT ProductId) : EmulationTargetPDO(
+	USHORT ProductId, XUSB_SUBTYPE SubType) : EmulationTargetPDO(
 		Serial, SessionId, VendorId, ProductId)
 {
 	this->_TargetType = Xbox360Wired;
@@ -74,7 +74,11 @@ ViGEm::Bus::Targets::EmulationTargetXUSB::EmulationTargetXUSB(ULONG Serial, LONG
 	this->_PowerCapabilities.WakeFromD0 = WdfTrue;
 	this->_PowerCapabilities.WakeFromD1 = WdfTrue;
 	this->_PowerCapabilities.WakeFromD2 = WdfTrue;
-}
+
+	//
+	// Set XUSB Capabilities
+	// 
+}	this->_SubType = SubType;
 
 NTSTATUS ViGEm::Bus::Targets::EmulationTargetXUSB::PdoPrepareDevice(PWDFDEVICE_INIT DeviceInit, PUNICODE_STRING DeviceId,
 	PUNICODE_STRING DeviceDescription)
@@ -318,7 +322,7 @@ VOID ViGEm::Bus::Targets::EmulationTargetXUSB::GetConfigurationDescriptorType(PU
 		0x11,        //   bLength
 		0x21,        //   bDescriptorType (HID)
 		0x00, 0x01,  //   bcdHID 1.00
-		0x01,        //   bCountryCode
+		this->_SubType,        //   bCountryCode
 		0x25,        //   bNumDescriptors
 		0x81,        //   bDescriptorType[0] (Unknown 0x81)
 		0x14, 0x00,  //   wDescriptorLength[0] 20

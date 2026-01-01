@@ -137,7 +137,7 @@ EXTERN_C NTSTATUS Bus_PlugInDevice(
 	description.SessionId = pFileData->SessionId;
 
 	// Set default IDs if supplied values are invalid
-	if (plugIn->VendorId == 0 || plugIn->ProductId == 0)
+	if (plugIn->VendorId == 0 || plugIn->ProductId == 0 || plugIn->SubType == 0)
 	{
 		switch (plugIn->TargetType)
 		{
@@ -165,7 +165,8 @@ EXTERN_C NTSTATUS Bus_PlugInDevice(
 				plugIn->SerialNo,
 				pFileData->SessionId,
 				plugIn->VendorId,
-				plugIn->ProductId
+				plugIn->ProductId,
+				plugIn->SubType
 			);
 
 			break;

@@ -237,6 +237,12 @@ namespace ViGEm::Bus::Core
 		USHORT _ProductId{};
 
 		//
+		// If set, the subtype the emulated device is reporting
+		//
+
+		XUSB_SUBTYPE _SubType{};
+
+		//
 		// Queue for blocking plugin requests
 		// 
 		WDFQUEUE _WaitDeviceReadyRequests{};
